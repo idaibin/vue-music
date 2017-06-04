@@ -1,7 +1,7 @@
 # v-music
 
 > A Vue.js project
-
+> vue2 vuex webpack 实现音乐播放器
 ## Build Setup
 
 ``` bash
