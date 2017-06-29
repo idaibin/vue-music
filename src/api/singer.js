@@ -2,7 +2,7 @@
  * @Author: daibin
  * @Date:   2017-06-02 21:50:36
  * @Last Modified by:   daibin
- * @Last Modified time: 2017-06-03 12:45:59
+ * @Last Modified time: 2017-06-06 22:30:59
  */
 
 'use strict'
@@ -51,7 +51,7 @@ export function getDiscLists() {
 }
 
 export function getSingerDetail(singerMid) {
-  const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?g_tk=151794268'
+  const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?g_tk=69361609'
 
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',

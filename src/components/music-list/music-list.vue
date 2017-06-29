@@ -20,9 +20,9 @@
             :probe-type="probeType"
             :listen-scroll="listenScroll"
             @scroll="scroll"
-            >
+    >
       <div class="song-list-wrapper">
-        <song-list @select="selectItem" :songs="songs"></song-list>
+        <song-list @select="selectItem" :songs="songs" :rank="rank"></song-list>
       </div>
       <div v-show="!songs.length" class="loading-container">
         <loading></loading>
@@ -146,7 +146,6 @@
   }
 </script>
 
-<style type="text/css"></style>
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
