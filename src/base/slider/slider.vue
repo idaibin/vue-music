@@ -51,14 +51,35 @@
         if (!this.slider) {
           return
         }
-        this._setSliderWidth(true)
-        this.slider.refresh()
+        clearTimeout(this.resizeTimer)
+        this.resizeTimer = setTimeout(() => {
+          if (this.slider.isInTransition) {
+            this._onScrollEnd()
+          } else {
+            if (this.autoPlay) {
+              this._play()
+            }
+          }
+          this.refresh()
+        }, 60)
       })
     },
-    destroyed() {
+    activated() {
+      if (this.autoPlay) {
+        this._play()
+      }
+    },
+    deactivated() {
+      clearTimeout(this.timer)
+    },
+    beforeDestroy() {
       clearTimeout(this.timer)
     },
     methods: {
+      refresh() {
+        this._setSliderWidth(true)
+        this.slider.refresh()
+      },
       _setSliderWidth(isResize) {
         this.children = this.$refs.sliderGroup.children
 
@@ -87,18 +108,29 @@
           snapSpeed: 400
         })
 
-        this.slider.on('scrollEnd', () => {
-          let pageIndex = this.slider.getCurrentPage().pageX
-          if (this.loop) {
-            pageIndex -= 1
-          }
-          this.currentPageIndex = pageIndex
+        this.slider.on('scrollEnd', this._onScrollEnd)
 
+        this.slider.on('touchend', () => {
           if (this.autoPlay) {
-            clearTimeout(this.timer)
             this._play()
           }
         })
+
+        this.slider.on('beforeScrollStart', () => {
+          if (this.autoPlay) {
+            clearTimeout(this.timer)
+          }
+        })
+      },
+      _onScrollEnd() {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        if (this.loop) {
+          pageIndex -= 1
+        }
+        this.currentPageIndex = pageIndex
+        if (this.autoPlay) {
+          this._play()
+        }
       },
       _initDots() {
         this.dots = new Array(this.children.length)
@@ -108,6 +140,7 @@
         if (this.loop) {
           pageIndex += 1
         }
+        clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.slider.goToPage(pageIndex, 0, 400)
         }, this.interval)
